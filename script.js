@@ -2,8 +2,8 @@ const main = document.getElementById('main');
 const addUser = document.getElementById('addUser');
 const double = document.getElementById('double');
 const millonarios = document.getElementById('mostrarMillonarios');
-const ordenar = document.getElementById('ordenarPorRiqueza');
-const calcularRiqueza = document.getElementById('calcularRiqueza');
+const ordenarPorRiqueza = document.getElementById('ordenarPorRiqueza');
+const calcularRiquezaBtn = document.getElementById('calcularRiqueza');
 
 let data = [];
 
@@ -26,7 +26,7 @@ async function getRandomUser() {
 
 function addData(obj) {
     data.push(obj);
-    updateDOM();
+    ordenar();
 }
 
 function updateDOM(providedData = data) {
@@ -43,5 +43,32 @@ function formatearDinero(number) {
     return '$ ' + (number).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
 }
 
+function duplicarDinero() {
+    data = data.map((user) => {
+        return { ...user, money: user.money * 2 }
+    });
+    updateDOM();
+}
+
+function ordenar() {
+    data.sort((a, b) => (b.money - a.money));
+    updateDOM();
+}
+
+function mostrarMillonarios() {
+    data = data.filter(user => user.money > 1e6);
+    updateDOM();
+}
+
+function calcularRiqueza() {
+    const riqueza = data.reduce((acc, user) => (acc += user.money), 0);
+    const riquezaEl = document.createElement('div');
+    riquezaEl.innerHTML = `<h3>Riqueza total <strong>${formatearDinero(riqueza)}</strong></h3>`;
+    main.appendChild(riquezaEl);
+}
 // Listeners
 addUser.addEventListener('click', getRandomUser);
+double.addEventListener('click', duplicarDinero);
+ordenarPorRiqueza.addEventListener('click', ordenar);
+millonarios.addEventListener('click', mostrarMillonarios);
+calcularRiquezaBtn.addEventListener('click', calcularRiqueza);
