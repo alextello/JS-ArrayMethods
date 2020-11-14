@@ -10,3 +10,5 @@ Métodos:
 - reduce
 
 ```
+
+![captura](https://github.com/alextello/JS-ArrayMethods/blob/master/img/1.png?raw=true)
